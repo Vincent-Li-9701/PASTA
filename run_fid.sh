@@ -1,0 +1,1 @@
+python -m pytorch_fid record/one_tgt_6D_6D_bins_single_head_scheduled_sampling_late/630/real record/one_tgt_6D_6D_bins_single_head_scheduled_sampling_late/630/syn --device cuda:2

@@ -1,0 +1,117 @@
+data:
+    dataset_type: "partnet"
+    encoding_type: "cached_autoregressive_partnet"
+    dataset_directory: "/afs/cs.stanford.edu/u/hansonlu/remote/partnethiergeo/table_hier"
+    annotation_file: "../config/bedroom_threed_front_splits.csv"
+    label_dict: "/afs/cs.stanford.edu/u/hansonlu/remote/ATISS/config/label_dict_table.pkl"
+    box_bounds: "/afs/cs.stanford.edu/u/hansonlu/remote/ATISS/config/bounds_table.pkl"
+    bin_centers: "/afs/cs.stanford.edu/u/hansonlu/remote/ATISS/config/centroids_table/train_{}_centroids_20.npy"
+    augmentations: null #["jitter"] #["rotations"] 
+    filter_fn: "threed_front_bedroom"
+    train_stats: "dataset_stats.txt"
+    filter_fn: "no_filtering"
+    room_layout_size: "64,64"
+    sample_strategy: "one_target"
+    box_ordering: null #"class_level_random"
+    num_points_to_sample: 2500
+    load_geo: false
+    load_points: false
+    load_clip: false
+
+generator:
+    type: "object_generation_transformer"
+    n_layers: 4
+    n_heads: 8
+    query_dimensions: 72
+    value_dimensions: 72
+    feed_forward_dimensions: 1024
+    hidden2output_layer: "autoregressive_mlc"
+    hidden_dims: 576
+    with_extra_fc: false
+    bbox_output: "autoregressive_mlc"
+    n_mixtures: 10
+    n_class: 45
+    n_pose_classes: 20
+    use_6D: true
+    use_t_coarse: true
+    use_p_coarse: true
+    use_s_coarse: true
+    single_head: true
+    single_head_trans: false
+    use_clip: false
+    sampling: true
+    pos_enc: null
+    dropout: 0.2
+    use_room_mask_as_features: true
+
+encoder:
+    type: "object_generation_transformer"
+    n_layers: 4
+    n_heads: 8
+    query_dimensions: 72
+    value_dimensions: 72
+    feed_forward_dimensions: 1024
+    hidden2output_layer: "autoregressive_mlc"
+    hidden_dims: 576
+    with_extra_fc: false
+    bbox_output: "autoregressive_mlc"
+    n_mixtures: 10
+    n_class: 45
+    n_pose_classes: 20
+    use_6D: true
+    use_t_coarse: true
+    use_p_coarse: true
+    use_s_coarse: true
+    single_head: true
+    single_head_trans: false
+    use_clip: false
+    sampling: true
+    pos_enc: null
+    dropout: 0.2
+    use_room_mask_as_features: true
+
+decoder:
+    type: "pointcloud_decoder_transformer"
+    n_layers: 4
+    n_heads: 8
+    query_dimensions: 72
+    value_dimensions: 72
+    feed_forward_dimensions: 1024
+    hidden2output_layer: "fc_head"
+    hidden_dims: 576
+    with_extra_fc: false
+    n_class: 1
+    dropout: 0.2
+    use_room_mask_as_features: true
+
+feature_extractor:
+    name: "resnet18"
+    feature_size: 64
+    freeze_bn: true
+    input_channels: 1
+
+training:
+    splits: ["train"]
+    epochs: 1400
+    steps_per_epoch: 500
+    batch_size: 128
+    save_frequency: 30
+    optimizer: Adam
+    scheduler: cosineAnnealingWarmRestarts
+    lr: 0.0001
+    weight_decay: 0.001
+    use_scheduled_sampling: true
+
+validation:
+    splits: ["val"]
+    frequency: 1
+    batch_size: 128
+
+testing:
+    splits: ["test"]
+    frequency: 1
+    batch_size: 128
+
+logger:
+    type: "wandb"
+    project: "part-gen"

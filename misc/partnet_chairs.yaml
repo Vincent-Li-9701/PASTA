@@ -1,0 +1,12 @@
+data:
+    # dataset_directory: "/orion/group/partnethiergeo/chair_mesh"
+    dataset_directory: "/afs/cs.stanford.edu/u/hansonlu/remote/pq_net_mesh/chair"
+    dataset_type: "partnet"
+    splits_file:
+        train: "/afs/cs.stanford.edu/u/hansonlu/remote/partnethiergeo/chair_hier/train.txt"
+        test: "/afs/cs.stanford.edu/u/hansonlu/remote/partnethiergeo/chair_hier/test.txt"
+        val: "/afs/cs.stanford.edu/u/hansonlu/remote/partnethiergeo/chair_hier/val.txt"
+    dataset_factory: "VoxelDatasetWithOccupancyLabels"
+    input_type: "foo"
+    equal: True
+    normalize: True
